@@ -80,9 +80,9 @@
   <script src="https://unpkg.com/topojson@3"></script>
   <script>
     ;(async function main () {
-      const prod = /github/.test(window.location.href)
-      const prefix = prod ? `/${location.href.split('/')[3]}` : ''
-      console.log({prod, prefix})
+      const github = /github/.test(window.location.href)
+      const prefix = github ? `/${location.href.split('/')[3]}` : ''
+      console.log({github, prefix})
       let [districtsInfo, districtsTrees, districts] = await Promise.all([
         d3.json(prefix + '/data/districts-info.json'),
         d3.json(prefix + '/data/districts-trees.json'),
