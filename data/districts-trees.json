@@ -1,0 +1,170 @@
+[
+  {
+    "name": "moncloa-aravaca",
+    "trees": 33766,
+    "population": 116903,
+    "area": 4653.11,
+    "density": 25.12,
+    "treesPerCapita": 0.2888377543775609
+  },
+  {
+    "name": "puente de vallecas",
+    "trees": 46777,
+    "population": 227595,
+    "area": 1496.86,
+    "density": 152.05,
+    "treesPerCapita": 0.20552736220039983
+  },
+  {
+    "name": "moratalaz",
+    "trees": 25014,
+    "population": 94197,
+    "area": 610.32,
+    "density": 154.34,
+    "treesPerCapita": 0.2655498582757413
+  },
+  {
+    "name": "retiro",
+    "trees": 15260,
+    "population": 118516,
+    "area": 546.62,
+    "density": 216.82,
+    "treesPerCapita": 0.12875898612845524
+  },
+  {
+    "name": "barajas",
+    "trees": 16181,
+    "population": 46876,
+    "area": 4192.28,
+    "density": 11.18,
+    "treesPerCapita": 0.34518730267087633
+  },
+  {
+    "name": "usera",
+    "trees": 32496,
+    "population": 134791,
+    "area": 777.77,
+    "density": 173.3,
+    "treesPerCapita": 0.2410843453939803
+  },
+  {
+    "name": "chamartin",
+    "trees": 26956,
+    "population": 143424,
+    "area": 917.55,
+    "density": 156.31,
+    "treesPerCapita": 0.187946229361892
+  },
+  {
+    "name": "villa de vallecas",
+    "trees": 36770,
+    "population": 104421,
+    "area": 5146.72,
+    "density": 19.86,
+    "treesPerCapita": 0.3521322339376179
+  },
+  {
+    "name": "chamberi",
+    "trees": 13393,
+    "population": 137401,
+    "area": 467.92,
+    "density": 293.64,
+    "treesPerCapita": 0.09747381751224518
+  },
+  {
+    "name": "vicalvaro",
+    "trees": 23065,
+    "population": 70051,
+    "area": 3526.67,
+    "density": 19.86,
+    "treesPerCapita": 0.329260110490928
+  },
+  {
+    "name": "hortaleza",
+    "trees": 52512,
+    "population": 180462,
+    "area": 2741.98,
+    "density": 65.81,
+    "treesPerCapita": 0.29098646806529904
+  },
+  {
+    "name": "fuencarral-el pardo",
+    "trees": 57009,
+    "population": 238756,
+    "area": 23783.84,
+    "density": 10.04,
+    "treesPerCapita": 0.23877515120038867
+  },
+  {
+    "name": "ciudad lineal",
+    "trees": 39321,
+    "population": 212529,
+    "area": 1142.57,
+    "density": 186.01,
+    "treesPerCapita": 0.18501475092810862
+  },
+  {
+    "name": "salamanca",
+    "trees": 22322,
+    "population": 143800,
+    "area": 539.24,
+    "density": 266.67,
+    "treesPerCapita": 0.15522948539638387
+  },
+  {
+    "name": "tetuan",
+    "trees": 15415,
+    "population": 153789,
+    "area": 537.47,
+    "density": 286.13,
+    "treesPerCapita": 0.10023473720487161
+  },
+  {
+    "name": "carabanchel",
+    "trees": 42519,
+    "population": 243998,
+    "area": 1404.83,
+    "density": 173.68,
+    "treesPerCapita": 0.1742596250788941
+  },
+  {
+    "name": "centro",
+    "trees": 11625,
+    "population": 131928,
+    "area": 522.82,
+    "density": 252.34,
+    "treesPerCapita": 0.088116245224668
+  },
+  {
+    "name": "arganzuela",
+    "trees": 24169,
+    "population": 151965,
+    "area": 646.22,
+    "density": 235.16,
+    "treesPerCapita": 0.1590432007370118
+  },
+  {
+    "name": "villaverde",
+    "trees": 41138,
+    "population": 142608,
+    "area": 2018.76,
+    "density": 70.64,
+    "treesPerCapita": 0.2884690900931224
+  },
+  {
+    "name": "latina",
+    "trees": 39605,
+    "population": 233808,
+    "area": 2542.72,
+    "density": 91.95,
+    "treesPerCapita": 0.1693911243413399
+  },
+  {
+    "name": "san blas-canillejas",
+    "trees": 40155,
+    "population": 154357,
+    "area": 2229.24,
+    "density": 69.24,
+    "treesPerCapita": 0.26014369286783234
+  }
+]

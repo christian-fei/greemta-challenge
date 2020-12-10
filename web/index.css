@@ -1,0 +1,17 @@
+@tailwind base;
+/* @tailwind components; */
+@tailwind utilities;
+/* @tailwind screens; */
+
+html, body {
+  min-height: 100%;
+}
+canvas {
+  height: 400px;
+  width: 600px;
+}
+.history-table {
+  display: block;
+  height: 400px;
+  overflow-y: scroll;
+}

@@ -1,0 +1,11 @@
+datasets/Conjuntosdedatos.csv filter=lfs diff=lfs merge=lfs -text
+datasets/SHP_ETRS89 filter=lfs diff=lfs merge=lfs -text
+datasets/airquality-co-2020.geojson filter=lfs diff=lfs merge=lfs -text
+datasets/catalog-data.csv filter=lfs diff=lfs merge=lfs -text
+datasets/green-areas filter=lfs diff=lfs merge=lfs -text
+datasets/trees filter=lfs diff=lfs merge=lfs -text
+datasets/air filter=lfs diff=lfs merge=lfs -text
+datasets/consumo_energia_edificios.csv filter=lfs diff=lfs merge=lfs -text
+datasets/happy-districts.json filter=lfs diff=lfs merge=lfs -text
+datasets/interesting-datasets.txt filter=lfs diff=lfs merge=lfs -text
+datasets/x.txt filter=lfs diff=lfs merge=lfs -text

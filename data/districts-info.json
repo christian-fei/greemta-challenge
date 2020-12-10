@@ -1,0 +1,128 @@
+[
+  {
+    "name": "centro",
+    "area": 522.82,
+    "population": 131928,
+    "density": 252.34
+  },
+  {
+    "name": "arganzuela",
+    "area": 646.22,
+    "population": 151965,
+    "density": 235.16
+  },
+  {
+    "name": "retiro",
+    "area": 546.62,
+    "population": 118516,
+    "density": 216.82
+  },
+  {
+    "name": "salamanca",
+    "area": 539.24,
+    "population": 143800,
+    "density": 266.67
+  },
+  {
+    "name": "chamartin",
+    "area": 917.55,
+    "population": 143424,
+    "density": 156.31
+  },
+  {
+    "name": "tetuan",
+    "area": 537.47,
+    "population": 153789,
+    "density": 286.13
+  },
+  {
+    "name": "chamberi",
+    "area": 467.92,
+    "population": 137401,
+    "density": 293.64
+  },
+  {
+    "name": "fuencarral-el pardo",
+    "area": 23783.84,
+    "population": 238756,
+    "density": 10.04
+  },
+  {
+    "name": "moncloa-aravaca",
+    "area": 4653.11,
+    "population": 116903,
+    "density": 25.12
+  },
+  {
+    "name": "latina",
+    "area": 2542.72,
+    "population": 233808,
+    "density": 91.95
+  },
+  {
+    "name": "carabanchel",
+    "area": 1404.83,
+    "population": 243998,
+    "density": 173.68
+  },
+  {
+    "name": "usera",
+    "area": 777.77,
+    "population": 134791,
+    "density": 173.3
+  },
+  {
+    "name": "puente de vallecas",
+    "area": 1496.86,
+    "population": 227595,
+    "density": 152.05
+  },
+  {
+    "name": "moratalaz",
+    "area": 610.32,
+    "population": 94197,
+    "density": 154.34
+  },
+  {
+    "name": "ciudad lineal",
+    "area": 1142.57,
+    "population": 212529,
+    "density": 186.01
+  },
+  {
+    "name": "hortaleza",
+    "area": 2741.98,
+    "population": 180462,
+    "density": 65.81
+  },
+  {
+    "name": "villaverde",
+    "area": 2018.76,
+    "population": 142608,
+    "density": 70.64
+  },
+  {
+    "name": "villa de vallecas",
+    "area": 5146.72,
+    "population": 104421,
+    "density": 19.86
+  },
+  {
+    "name": "vicalvaro",
+    "area": 3526.67,
+    "population": 70051,
+    "density": 19.86
+  },
+  {
+    "name": "san blas-canillejas",
+    "area": 2229.24,
+    "population": 154357,
+    "density": 69.24
+  },
+  {
+    "name": "barajas",
+    "area": 4192.28,
+    "population": 46876,
+    "density": 11.18
+  }
+]

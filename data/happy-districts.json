@@ -1,0 +1,128 @@
+{
+  "Arganzuela": {
+    "Igual que lo habitual": 338,
+    "Menos que lo habitual": 25,
+    "Mucho menos que lo habitual": 7,
+    "Más que lo habitual": 45
+  },
+  "Barajas": {
+    "Igual que lo habitual": 335,
+    "Menos que lo habitual": 27,
+    "Mucho menos que lo habitual": 6,
+    "Más que lo habitual": 49
+  },
+  "Carabanchel": {
+    "Igual que lo habitual": 339,
+    "Menos que lo habitual": 28,
+    "Mucho menos que lo habitual": 11,
+    "Más que lo habitual": 51
+  },
+  "Centro": {
+    "Igual que lo habitual": 321,
+    "Menos que lo habitual": 24,
+    "Mucho menos que lo habitual": 7,
+    "Más que lo habitual": 64
+  },
+  "Chamartin": {
+    "Igual que lo habitual": 337,
+    "Menos que lo habitual": 17,
+    "Mucho menos que lo habitual": 3,
+    "Más que lo habitual": 58
+  },
+  "Chamberi": {
+    "Igual que lo habitual": 335,
+    "Menos que lo habitual": 28,
+    "Mucho menos que lo habitual": 7,
+    "Más que lo habitual": 49
+  },
+  "Ciudad Lineal": {
+    "Igual que lo habitual": 354,
+    "Menos que lo habitual": 24,
+    "Mucho menos que lo habitual": 6,
+    "Más que lo habitual": 48
+  },
+  "Fuencarral-El Pardo": {
+    "Igual que lo habitual": 336,
+    "Menos que lo habitual": 24,
+    "Mucho menos que lo habitual": 7,
+    "Más que lo habitual": 56
+  },
+  "Hortaleza": {
+    "Igual que lo habitual": 350,
+    "Menos que lo habitual": 21,
+    "Mucho menos que lo habitual": 6,
+    "Más que lo habitual": 50
+  },
+  "Latina": {
+    "Igual que lo habitual": 353,
+    "Menos que lo habitual": 24,
+    "Mucho menos que lo habitual": 5,
+    "Más que lo habitual": 47
+  },
+  "Moncloa-Aravaca": {
+    "Igual que lo habitual": 339,
+    "Menos que lo habitual": 15,
+    "Mucho menos que lo habitual": 6,
+    "Más que lo habitual": 63
+  },
+  "Moratalaz": {
+    "Igual que lo habitual": 335,
+    "Menos que lo habitual": 26,
+    "Mucho menos que lo habitual": 3,
+    "Más que lo habitual": 44
+  },
+  "Puente de Vallecas": {
+    "Igual que lo habitual": 348,
+    "Menos que lo habitual": 30,
+    "Mucho menos que lo habitual": 6,
+    "Más que lo habitual": 52
+  },
+  "Retiro": {
+    "Igual que lo habitual": 358,
+    "Menos que lo habitual": 18,
+    "Mucho menos que lo habitual": 6,
+    "Más que lo habitual": 37
+  },
+  "Salamanca": {
+    "Igual que lo habitual": 353,
+    "Menos que lo habitual": 18,
+    "Mucho menos que lo habitual": 2,
+    "Más que lo habitual": 39
+  },
+  "San Blas": {
+    "Igual que lo habitual": 341,
+    "Menos que lo habitual": 23,
+    "Mucho menos que lo habitual": 11,
+    "Más que lo habitual": 44
+  },
+  "Tetuan": {
+    "Igual que lo habitual": 334,
+    "Menos que lo habitual": 23,
+    "Mucho menos que lo habitual": 7,
+    "Más que lo habitual": 48
+  },
+  "Usera": {
+    "Igual que lo habitual": 342,
+    "Menos que lo habitual": 24,
+    "Mucho menos que lo habitual": 7,
+    "Más que lo habitual": 47
+  },
+  "Vicalvaro": {
+    "Igual que lo habitual": 347,
+    "Menos que lo habitual": 27,
+    "Mucho menos que lo habitual": 3,
+    "Más que lo habitual": 42
+  },
+  "Villa de Vallecas": {
+    "Igual que lo habitual": 313,
+    "Menos que lo habitual": 26,
+    "Mucho menos que lo habitual": 10,
+    "Más que lo habitual": 62
+  },
+  "Villaverde": {
+    "Igual que lo habitual": 334,
+    "Menos que lo habitual": 33,
+    "Mucho menos que lo habitual": 8,
+    "Más que lo habitual": 41
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "npx http-server -p 4000",
+    "build": "NODE_ENV=production tailwindcss-cli build web/index.css -o web/style.css"
+  },
+  "dependencies": {
+    "@turf/center": "^6.0.1",
+    "cheerio": "^1.0.0-rc.3",
+    "fast-csv": "^4.3.5",
+    "lodash.samplesize": "^4.2.0",
+    "tailwindcss-cli": "^0.1.2"
+  }
+}
