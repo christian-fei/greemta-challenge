@@ -8,10 +8,12 @@
   <style>
     * {box-sizing: border-box;}
     html, body {
-      height: 100vh;
-      width: 100vw;
       margin: 0;
       padding: 0;
+    }
+    body {
+      height: 95vh;
+      width: 95vw;
     }
     body {
       padding: 0.5em;
@@ -93,7 +95,7 @@
       const treesColorScale = d3.scaleQuantize([0, maxTrees], d3.schemeGreens[9])
       const treesPerCapitaColorScale = d3.scaleQuantize([0, maxTreesPerCapita], d3.schemeGreens[9])
       
-      const width = 500, height = 700
+      const width = 400, height = 600
       // const width = document.body.getBoundingClientRect().width / 3 * 2
       // const height = document.body.getBoundingClientRect().height - 10
 
