@@ -5,6 +5,10 @@ More info here: https://challenge.greemta.eu/
 > Origin of the data is Madrid City Council. 
 > This work is not associated with the Madrid City Council.
 
+## [Challenge submission](https://christian-fei.github.io/greemta-challenge/web/)
+
+## [Git Repository](https://github.com/christian-fei/greemta-challenge)
+
 ## visualizations
 
 - `trees.heat.html` shows the heatmap of the trees
