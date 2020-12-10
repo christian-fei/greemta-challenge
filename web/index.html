@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Madrid Trees</title>
   <!-- <base href="https://christian-fei.github.io/greemta-challenge/"> -->
   <style>
-    * {box-sizing: border-box;}
-    html, body {
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
       margin: 0;
       padding: 0;
     }
+
     body {
       height: 95vh;
       width: 95vw;
     }
+
     body {
       padding: 0.5em;
     }
+
     .sidebar {
       min-width: 15em;
     }
-    path {
+
+    path {
       transition: all .3s ease;
     }
+
     path:hover {
       fill-opacity: 0.3;
       fill: black;
@@ -33,24 +43,27 @@
   <script>
     const prod = /github/.test(window.location.href)
     if (prod) {
-      document.write("<base href="+'https://'+document.location.host +'/'+ location.href.split('/')[3]+'/'+" />");
+      document.write("<base href=" + 'https://' + document.location.host + '/' + location.href.split('/')[3] + '/' + " />");
     }
     // document.head.querySelector('base').remove()
   </script>
 </head>
+
 <body>
   <h1 class="text-4xl mb-8">A green exploration of Madrid</h1>
   <small>Best viewed on a desktop</small>
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
     <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Population of the districts of Madrid</h1>
+      <h1 class="text-2xl mt-8 mb-8">Population<br> by district</h1>
       <div class="overflow-hidden">
+        <svg id="legend-population"></svg>
         <svg id="population-map" class="map"></svg>
       </div>
     </div>
     <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Population density of the districts of Madrid</h1>
+      <h1 class="text-2xl mt-8 mb-8">Population density<br> by district</h1>
       <div class="overflow-hidden">
+        <svg id="legend-density"></svg>
         <svg id="density-map" class="map"></svg>
       </div>
     </div>
@@ -60,14 +73,16 @@
   </div>
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
     <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Trees of the districts of Madrid</h1>
+      <h1 class="text-2xl mt-8 mb-8">Trees<br> by district</h1>
       <div class="overflow-hidden">
+        <svg id="legend-trees"></svg>
         <svg id="trees-map" class="map"></svg>
       </div>
     </div>
     <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Trees per capita</h1>
+      <h1 class="text-2xl mt-8 mb-8">Trees per capita<br> by district</h1>
       <div class="overflow-hidden">
+        <svg id="legend-treespercapita"></svg>
         <svg id="treespercapita-map" class="map"></svg>
       </div>
     </div>
@@ -75,14 +90,14 @@
       <div id="trees-tooltip" class="tooltip"></div>
     </div>
   </div>
-  
+
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
   <script>
-    ;(async function main () {
+    ; (async function main() {
       const github = /github/.test(window.location.href)
       const prefix = github ? `/${location.href.split('/')[3]}` : ''
-      console.log({github, prefix})
+      console.log({ github, prefix })
       let [districtsInfo, districtsTrees, districts] = await Promise.all([
         d3.json(prefix + '/data/districts-info.json'),
         d3.json(prefix + '/data/districts-trees.json'),
@@ -101,14 +116,16 @@
       const densityColorScale = d3.scaleQuantize([0, maxDensity], d3.schemeReds[9])
       const treesColorScale = d3.scaleQuantize([0, maxTrees], d3.schemeGreens[9])
       const treesPerCapitaColorScale = d3.scaleQuantize([0, maxTreesPerCapita], d3.schemeGreens[9])
-      
-      const width = 400, height = 600
+
+      window.populationColorScale = populationColorScale
+
+      const width = 300, height = 500
       // const width = document.body.getBoundingClientRect().width / 3 * 2
       // const height = document.body.getBoundingClientRect().height - 10
 
       const bounds = d3.geoBounds(districts)
       const center = d3.geoCentroid(districts)
-      
+
       var distance = d3.geoDistance(bounds[0], bounds[1])
       const scale = height / distance / Math.sqrt(2)
       const projection = d3.geoMercator()
@@ -122,6 +139,61 @@
       const densityMap = d3.select('#density-map')
       const treesMap = d3.select('#trees-map')
       const treesPerCapitaMap = d3.select('#treespercapita-map')
+
+      var legendRectSize = 12
+      var legendSpacing = 2
+      d3.select('#legend-population')
+        .attr('height', legendRectSize)
+        .selectAll('.legend')
+        .data(populationColorScale.ticks())
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', populationColorScale)
+        .style('stroke', populationColorScale)
+        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
+      d3.select('#legend-density')
+        .attr('height', legendRectSize)
+        .selectAll('.legend')
+        .data(densityColorScale.ticks())
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', densityColorScale)
+        .style('stroke', densityColorScale)
+        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
+      d3.select('#legend-trees')
+        .attr('height', legendRectSize)
+        .selectAll('.legend')
+        .data(treesColorScale.ticks())
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', treesColorScale)
+        .style('stroke', treesColorScale)
+        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
+      d3.select('#legend-treespercapita')
+        .attr('height', legendRectSize)
+        .selectAll('.legend')
+        .data(treesPerCapitaColorScale.ticks())
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', treesPerCapitaColorScale)
+        .style('stroke', treesPerCapitaColorScale)
+        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
 
       const peopleTooltip = d3.select('#people-tooltip')
       const treesTooltip = d3.select('#trees-tooltip')
@@ -139,7 +211,7 @@
         map.call(d3.zoom()
           .scaleExtent([1, 8])
           .on("zoom", function zoomed(event) {
-            const {transform} = event;
+            const { transform } = event;
             map.attr("transform", transform);
             map.attr("stroke-width", 1 / transform.k);
           }))
@@ -149,7 +221,7 @@
           .enter().append('path')
           .attr('fill', (item) => {
             const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
-            if(!district) {
+            if (!district) {
               console.log('district not found', item.properties.name)
               return 'black'
             }
@@ -170,20 +242,20 @@
         treesMap.attr('width', width)
           .attr('height', height)
           .attr("viewBox", [0, 0, width, height])
-          treesPerCapitaMap.attr('width', width)
+        treesPerCapitaMap.attr('width', width)
           .attr('height', height)
           .attr("viewBox", [0, 0, width, height])
         treesMap.call(d3.zoom()
           .scaleExtent([1, 8])
           .on("zoom", function zoomed(event) {
-            const {transform} = event;
+            const { transform } = event;
             treesMap.attr("transform", transform);
             treesMap.attr("stroke-width", 1 / transform.k);
           }))
         treesPerCapitaMap.call(d3.zoom()
           .scaleExtent([1, 8])
           .on("zoom", function zoomed(event) {
-            const {transform} = event;
+            const { transform } = event;
             treesPerCapitaMap.attr("transform", transform);
             treesPerCapitaMap.attr("stroke-width", 1 / transform.k);
           }))
@@ -221,7 +293,9 @@
             treesTooltip.html('hover over a district to see information about it')
           })
       }
+
     })();
   </script>
 </body>
+
 </html>
