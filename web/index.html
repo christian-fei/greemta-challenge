@@ -97,6 +97,13 @@
         <svg id="treesperarea-map" class="map"></svg>
       </div>
     </div>
+    <div class="">
+      <h1 class="text-2xl mt-8 mb-8">Trees per density<br> by district</h1>
+      <svg id="legend-treesperdensity"></svg>
+      <div class="overflow-hidden">
+        <svg id="treesperdensity-map" class="map"></svg>
+      </div>
+    </div>
     <div class="sidebar bg-gray-50 p-2">
       <div id="trees-tooltip" class="tooltip"></div>
     </div>
@@ -124,12 +131,14 @@
       const maxTrees = Math.max(...districtsTrees.map(d => d.trees))
       const maxTreesPerCapita = Math.max(...districtsTrees.map(d => d.treesPerCapita))
       const maxTreesPerArea = Math.max(...districtsTrees.map(d => d.treesPerArea))
+      const maxTreesPerDensity = Math.max(...districtsTrees.map(d => d.treesPerDensity))
 
       const populationColorScale = d3.scaleQuantize([0, maxPopulation], d3.schemeReds[9])
       const densityColorScale = d3.scaleQuantize([0, maxDensity], d3.schemeReds[9])
       const treesColorScale = d3.scaleQuantize([0, maxTrees], d3.schemeGreens[9])
       const treesPerCapitaColorScale = d3.scaleQuantize([0, maxTreesPerCapita], d3.schemeGreens[9])
       const treesPerAreaColorScale = d3.scaleQuantize([0, maxTreesPerArea], d3.schemeGreens[9])
+      const treesPerDensityColorScale = d3.scaleQuantize([0, maxTreesPerDensity], d3.schemeGreens[9])
 
       const width = 300, height = 500
       // const width = document.body.getBoundingClientRect().width / 3 * 2
@@ -152,6 +161,7 @@
       const treesMap = d3.select('#trees-map')
       const treesPerCapitaMap = d3.select('#treespercapita-map')
       const treesPerAreaMap = d3.select('#treesperarea-map')
+      const treesPerDensityMap = d3.select('#treesperdensity-map')
 
       const peopleTooltip = d3.select('#people-tooltip')
       const treesTooltip = d3.select('#trees-tooltip')
@@ -163,7 +173,8 @@
         [d3.select('#legend-density'), densityColorScale],
         [d3.select('#legend-trees'), treesColorScale],
         [d3.select('#legend-treespercapita'), treesPerCapitaColorScale],
-        [d3.select('#legend-treesperarea'), treesPerAreaColorScale]
+        [d3.select('#legend-treesperarea'), treesPerAreaColorScale],
+        [d3.select('#legend-treesperdensity'), treesPerDensityColorScale],
       ])
 
       setupPeopleMap([
@@ -174,6 +185,7 @@
         [treesMap, treesColorScale, 'trees'],
         [treesPerCapitaMap, treesPerCapitaColorScale, 'treesPerCapita'],
         [treesPerAreaMap, treesPerAreaColorScale, 'treesPerArea'],
+        [treesPerDensityMap, treesPerDensityColorScale, 'treesPerDensity'],
       ])
 
       function setupPeopleMap(pairs) {
