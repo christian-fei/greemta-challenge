@@ -56,6 +56,21 @@
 <body>
   <h1 class="text-4xl mb-8">A green exploration of Madrid</h1>
   <small>Best viewed on a desktop</small>
+
+  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <!-- <div class=" sidebar bg-gray-50 p-2">
+      <div id="consumption-tooltip" class="tooltip"></div>
+    </div>
+ -->
+    <div class="">
+      <h1 class="text-2xl mt-8 mb-8">Consumption</h1>
+      <svg id="legend-consumption"></svg>
+      <div class="overflow-hidden">
+        <svg id="consumption-map" class="map"></svg>
+      </div>
+    </div>
+  </div>
+
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
     <div class="sidebar bg-gray-50 p-2">
       <div id="trees-tooltip" class="tooltip"></div>
@@ -113,23 +128,24 @@
 
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
+  <script src="https://unpkg.com/d3-hexbin@0.2.2/build/d3-hexbin.js"></script>
   <script>
     ; (async function main() {
       const github = /github/.test(window.location.href)
       const prefix = github ? `/${location.href.split('/')[3]}` : ''
       console.log({ github, prefix })
-      let [districtsInfo, districtsTrees, districts, treePoints] = await Promise.all([
+      let [districtsInfo, districtsTrees, districts, consumption] = await Promise.all([
         d3.json(prefix + '/data/districts-info.json'),
         d3.json(prefix + '/data/districts-trees.json'),
         d3.json(prefix + '/data/districts.geojson'),
-        d3.json(prefix + '/data/tree-points.geojson')
+        d3.dsv(';', prefix + '/datasets/consumo_energia_edificios.csv'),
       ])
       districts.features = districts.features.map(d => {
         d.properties.name = d.properties.name.toLowerCase()
         return d
       })
 
-      console.log(treePoints.features.length)
+      window.districts = districts
 
       const maxPopulation = Math.max(...districtsInfo.map(d => d.population))
       const maxDensity = Math.max(...districtsInfo.map(d => d.density))
@@ -167,6 +183,7 @@
       const treesPerCapitaMap = d3.select('#treespercapita-map')
       const treesPerAreaMap = d3.select('#treesperarea-map')
       const treesPerDensityMap = d3.select('#treesperdensity-map')
+      const consumptionMap = d3.select('#consumption-map')
 
       const peopleTooltip = d3.select('#people-tooltip')
       const treesTooltip = d3.select('#trees-tooltip')
@@ -190,6 +207,62 @@
         [treesPerAreaMap, treesPerAreaColorScale, treesTooltip, 'treesPerArea'],
         [treesPerDensityMap, treesPerDensityColorScale, treesTooltip, 'treesPerDensity'],
       ])
+
+      consumption = consumption.map(c => {
+        let latitude = +c.LATITUD.replace(/\./gi, '')
+        let longitude = +c.LONGITUD.replace(/\./gi, '')
+        latitude = Math.abs(latitude / (latitude.toString().length - Math.pow(10, latitude.toString().length - 2)))
+        longitude = -1 * Math.abs(longitude / (longitude.toString().length - Math.pow(10, longitude.toString().length - 2 )))
+        return {
+          year: +c.ANO,
+          month: +c.MES,
+          latitude,
+          longitude,
+          consumption: +c.CONSUMO,
+          unit: c.UNIDADES,
+          class: c.CLASE
+        }
+      })
+
+      const hexbin = d3.hexbin()
+        .radius(12)
+        .extent([[0, 0], [width, height]])
+        .x(function(d) { return projection(d)[0]; })
+        .y(function(d) { return projection(d)[1]; })
+
+      const hexbinData = hexbin(consumption.map(c => Object.assign([c.longitude, c.latitude], {consumption: c.consumption})))
+      window.hexbinData = hexbinData
+      const consumptionColorScale = d3.scaleLinear().range(["yellow", "red"])
+        .domain([0, Math.max(...hexbinData.map(d => d.length))])
+
+      setupLegend([
+        [d3.select('#legend-consumption'), consumptionColorScale]
+      ])
+
+
+      consumptionMap
+        .attr('width', width)
+        .attr('height', height)
+        .attr("viewBox", [0, 0, width, height])
+        .call(d3.zoom()
+          .scaleExtent([1, 8])
+          .on("zoom", function zoomed(event) {
+            const { transform } = event;
+            consumptionMap.attr("transform", transform);
+          }))
+      consumptionMap
+        .selectAll('path')
+        .data(districts.features)
+        .enter().append('path')
+        .attr('d', path)
+        .attr('fill', 'lightgrey')
+      consumptionMap
+        .append('g')
+        .selectAll('path')
+        .data(hexbinData)
+        .enter().append("path")
+          .attr("d", (d) => "M" + d.x + "," + d.y + hexbin.hexagon())
+          .attr('fill', (d, i) => consumptionColorScale(d.length))
 
       function setupLegend (pairs) {
         const legendRectSize = 12
@@ -222,7 +295,7 @@
             .on("zoom", function zoomed(event) {
               const { transform } = event;
               map.attr("transform", transform);
-              map.attr("stroke-width", 1 / transform.k);
+              // map.attr("stroke-width", 1 / transform.k);
             }))
           map.selectAll('path')
             .data(districts.features)
