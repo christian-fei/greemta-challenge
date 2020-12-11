@@ -57,6 +57,10 @@
   <h1 class="text-4xl mb-8">A green exploration of Madrid</h1>
   <small>Best viewed on a desktop</small>
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class="sidebar bg-gray-50 p-2">
+      <div id="trees-tooltip" class="tooltip"></div>
+    </div>
+
     <div class="">
       <h1 class="text-2xl mt-8 mb-8">Trees<br> by district</h1>
       <svg id="legend-trees"></svg>
@@ -85,11 +89,12 @@
         <svg id="treesperdensity-map" class="map"></svg>
       </div>
     </div>
-    <div class="sidebar bg-gray-50 p-2">
-      <div id="trees-tooltip" class="tooltip"></div>
-    </div>
   </div>
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class=" sidebar bg-gray-50 p-2">
+      <div id="people-tooltip" class="tooltip"></div>
+    </div>
+
     <div class="">
       <h1 class="text-2xl mt-8 mb-8">Population<br> by district</h1>
       <svg id="legend-population"></svg>
@@ -104,9 +109,6 @@
         <svg id="density-map" class="map"></svg>
       </div>
     </div>
-    <div class=" sidebar bg-gray-50 p-2">
-      <div id="people-tooltip" class="tooltip"></div>
-    </div>
   </div>
 
   <script src="https://d3js.org/d3.v6.min.js"></script>
@@ -116,15 +118,18 @@
       const github = /github/.test(window.location.href)
       const prefix = github ? `/${location.href.split('/')[3]}` : ''
       console.log({ github, prefix })
-      let [districtsInfo, districtsTrees, districts] = await Promise.all([
+      let [districtsInfo, districtsTrees, districts, treePoints] = await Promise.all([
         d3.json(prefix + '/data/districts-info.json'),
         d3.json(prefix + '/data/districts-trees.json'),
-        d3.json(prefix + '/data/districts.geojson')
+        d3.json(prefix + '/data/districts.geojson'),
+        d3.json(prefix + '/data/tree-points.geojson')
       ])
       districts.features = districts.features.map(d => {
         d.properties.name = d.properties.name.toLowerCase()
         return d
       })
+
+      console.log(treePoints.features.length)
 
       const maxPopulation = Math.max(...districtsInfo.map(d => d.population))
       const maxDensity = Math.max(...districtsInfo.map(d => d.density))
@@ -177,52 +182,14 @@
         [d3.select('#legend-treesperdensity'), treesPerDensityColorScale],
       ])
 
-      setupPeopleMap([
-        [populationMap, populationColorScale, 'population'],
-        [densityMap, densityColorScale, 'density'],
+      setupMap([
+        [populationMap, populationColorScale, peopleTooltip, 'population'],
+        [densityMap, densityColorScale, peopleTooltip, 'density'],
+        [treesMap, treesColorScale, treesTooltip, 'trees'],
+        [treesPerCapitaMap, treesPerCapitaColorScale, treesTooltip, 'treesPerCapita'],
+        [treesPerAreaMap, treesPerAreaColorScale, treesTooltip, 'treesPerArea'],
+        [treesPerDensityMap, treesPerDensityColorScale, treesTooltip, 'treesPerDensity'],
       ])
-      setupTreesMap([
-        [treesMap, treesColorScale, 'trees'],
-        [treesPerCapitaMap, treesPerCapitaColorScale, 'treesPerCapita'],
-        [treesPerAreaMap, treesPerAreaColorScale, 'treesPerArea'],
-        [treesPerDensityMap, treesPerDensityColorScale, 'treesPerDensity'],
-      ])
-
-      function setupPeopleMap(pairs) {
-        for (const [map, colorScale, prop] of pairs) {
-          map.attr('width', width)
-            .attr('height', height)
-            .attr("viewBox", [0, 0, width, height])
-          map.call(d3.zoom()
-            .scaleExtent([1, 8])
-            .on("zoom", function zoomed(event) {
-              const { transform } = event;
-              map.attr("transform", transform);
-              map.attr("stroke-width", 1 / transform.k);
-            }))
-            map.selectAll('path')
-              .data(districts.features)
-              .enter().append('path')
-              .attr('fill', (item) => {
-                const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
-                if (!district) {
-                  console.log('district not found', item.properties.name)
-                  return 'black'
-                }
-                return colorScale(district[prop])
-              })
-              .attr('d', path)
-              .on('mouseenter', (e, item) => {
-                const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
-                const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
-                peopleTooltip.html(text)
-              })
-              .on('mouseout', () => {
-                peopleTooltip.html('hover over a district to see information about it')
-              })
-        }
-
-      }
 
       function setupLegend (pairs) {
         const legendRectSize = 12
@@ -245,8 +212,8 @@
         }
       }
       
-      function setupTreesMap(pairs) {
-        for (const [map, colorScale, prop] of pairs) {
+      function setupMap(pairs) {
+        for (const [map, colorScale, tooltip, prop] of pairs) {
           map.attr('width', width)
             .attr('height', height)
             .attr("viewBox", [0, 0, width, height])
@@ -268,10 +235,10 @@
             .on('mouseenter', (e, item) => {
               const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
               const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
-              treesTooltip.html(text)
+              tooltip.html(text)
             })
             .on('mouseout', () => {
-              treesTooltip.html('hover over a district to see information about it')
+              tooltip.html('hover over a district to see information about it')
             })
         }
       }
