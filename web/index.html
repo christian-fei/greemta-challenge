@@ -63,10 +63,18 @@
     </div>
  -->
     <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Consumption</h1>
+      <h1 class="text-2xl mt-8 mb-8">Consumption (hexbin)</h1>
       <svg id="legend-consumption"></svg>
       <div class="overflow-hidden">
         <svg id="consumption-map" class="map"></svg>
+      </div>
+    </div>
+    <div class="">
+      <h1 class="text-2xl mt-8 mb-8">Consumption (heatmap)</h1>
+      <!-- <svg id="legend-consumption-heatmap"></svg> -->
+      <div class=" relative">
+        <svg id="districts-map" class="map"></svg>
+        <canvas id="consumption-heatmap" class="map absolute top-0 "></canvas>
       </div>
     </div>
   </div>
@@ -129,6 +137,7 @@
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
   <script src="https://unpkg.com/d3-hexbin@0.2.2/build/d3-hexbin.js"></script>
+  <script src="https://unpkg.com/simpleheat@0.4.0/simpleheat.js"></script>
   <script>
     ; (async function main() {
       const github = /github/.test(window.location.href)
@@ -264,6 +273,34 @@
         .enter().append("path")
           .attr("d", (d) => "M" + d.x + "," + d.y + hexbin.hexagon())
           .attr('fill', (d, i) => consumptionColorScale(d.length))
+
+      const districtsMap = d3.select('#districts-map').attr('width', width).attr('height', height);
+      const consumptionHeatmap = d3.select('#consumption-heatmap').attr('width', width).attr('height', height);
+      const canvas = consumptionHeatmap.node(),
+        context = canvas.getContext("2d")
+      const heat = simpleheat(canvas)
+      districtsMap.attr('width', width)
+        .attr('height', height)
+        .attr("viewBox", [0, 0, width, height])
+      districtsMap.selectAll('path')
+        .data(districts.features)
+        .enter().append('path')
+        .attr('fill', 'lightgrey')
+        .attr('d', path)
+
+
+      heat.data(consumption.map(c => {
+        const [lat, lon] = projection([c.longitude, c.latitude])
+        console.log(lat, lon, c.consumption)
+        return [lat, lon, c.consumption]
+      }))
+      // set point radius and blur radius (25 and 15 by default)
+      heat.radius(10, 10)
+      // optionally customize gradient colors, e.g. below
+      // (would be nicer if d3 color scale worked here)
+      // heat.gradient({0: '#0000ff', 0.5: '#00ff00', 1: '#ff0000'})
+      heat.max(d3.max(consumption, d => d.consumption))
+      heat.draw(0.05)
 
       function setupLegend (pairs) {
         const legendRectSize = 12

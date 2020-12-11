@@ -6,10 +6,6 @@
 html, body {
   min-height: 100%;
 }
-canvas {
-  height: 400px;
-  width: 600px;
-}
 .history-table {
   display: block;
   height: 400px;
