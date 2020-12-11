@@ -248,6 +248,7 @@
           .scaleExtent([1, 8])
           .on("zoom", function zoomed(event) {
             const { transform } = event;
+            if (transform.k > 2.5) return
             consumptionMap.attr("transform", transform);
           }))
       consumptionMap
@@ -294,6 +295,7 @@
             .scaleExtent([1, 8])
             .on("zoom", function zoomed(event) {
               const { transform } = event;
+              if (transform.k > 2.5) return
               map.attr("transform", transform);
               // map.attr("stroke-width", 1 / transform.k);
             }))
