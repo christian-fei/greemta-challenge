@@ -49,7 +49,9 @@ async function main () {
           population: info.population,
           area: info.area,
           density: info.density,
-          treesPerCapita: districts[curr].trees / info.population
+          treesPerCapita: districts[curr].trees / info.population,
+          treesPerDensity: districts[curr].trees / info.density,
+          treesPerArea: districts[curr].trees / info.area
         }])
       }, [])
       fs.writeFileSync(path.resolve(__dirname, '..', 'data', 'districts-trees.json'), JSON.stringify(array, null, 2), { encoding: 'utf-8' })

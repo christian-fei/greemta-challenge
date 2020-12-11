@@ -5,7 +5,9 @@
     "population": 116903,
     "area": 4653.11,
     "density": 25.12,
-    "treesPerCapita": 0.2888377543775609
+    "treesPerCapita": 0.2888377543775609,
+    "treesPerDensity": 1344.187898089172,
+    "treesPerArea": 7.256652002639096
   },
   {
     "name": "puente de vallecas",
@@ -13,7 +15,9 @@
     "population": 227595,
     "area": 1496.86,
     "density": 152.05,
-    "treesPerCapita": 0.20552736220039983
+    "treesPerCapita": 0.20552736220039983,
+    "treesPerDensity": 307.642222952976,
+    "treesPerArea": 31.250083508143717
   },
   {
     "name": "moratalaz",
@@ -21,7 +25,9 @@
     "population": 94197,
     "area": 610.32,
     "density": 154.34,
-    "treesPerCapita": 0.2655498582757413
+    "treesPerCapita": 0.2655498582757413,
+    "treesPerDensity": 162.07075288324478,
+    "treesPerArea": 40.985057019268574
   },
   {
     "name": "retiro",
@@ -29,7 +35,9 @@
     "population": 118516,
     "area": 546.62,
     "density": 216.82,
-    "treesPerCapita": 0.12875898612845524
+    "treesPerCapita": 0.12875898612845524,
+    "treesPerDensity": 70.3809611659441,
+    "treesPerArea": 27.91701730635542
   },
   {
     "name": "barajas",
@@ -37,7 +45,9 @@
     "population": 46876,
     "area": 4192.28,
     "density": 11.18,
-    "treesPerCapita": 0.34518730267087633
+    "treesPerCapita": 0.34518730267087633,
+    "treesPerDensity": 1447.3166368515206,
+    "treesPerArea": 3.859713568750179
   },
   {
     "name": "usera",
@@ -45,7 +55,9 @@
     "population": 134791,
     "area": 777.77,
     "density": 173.3,
-    "treesPerCapita": 0.2410843453939803
+    "treesPerCapita": 0.2410843453939803,
+    "treesPerDensity": 187.5129832660127,
+    "treesPerArea": 41.78098923846382
   },
   {
     "name": "chamartin",
@@ -53,7 +65,9 @@
     "population": 143424,
     "area": 917.55,
     "density": 156.31,
-    "treesPerCapita": 0.187946229361892
+    "treesPerCapita": 0.187946229361892,
+    "treesPerDensity": 172.4521783635084,
+    "treesPerArea": 29.378235518500357
   },
   {
     "name": "villa de vallecas",
@@ -61,7 +75,9 @@
     "population": 104421,
     "area": 5146.72,
     "density": 19.86,
-    "treesPerCapita": 0.3521322339376179
+    "treesPerCapita": 0.3521322339376179,
+    "treesPerDensity": 1851.460221550856,
+    "treesPerArea": 7.144356017036093
   },
   {
     "name": "chamberi",
@@ -69,7 +85,9 @@
     "population": 137401,
     "area": 467.92,
     "density": 293.64,
-    "treesPerCapita": 0.09747381751224518
+    "treesPerCapita": 0.09747381751224518,
+    "treesPerDensity": 45.610271080234305,
+    "treesPerArea": 28.62241408787827
   },
   {
     "name": "vicalvaro",
@@ -77,7 +95,9 @@
     "population": 70051,
     "area": 3526.67,
     "density": 19.86,
-    "treesPerCapita": 0.329260110490928
+    "treesPerCapita": 0.329260110490928,
+    "treesPerDensity": 1161.3796576032225,
+    "treesPerArea": 6.540163950695699
   },
   {
     "name": "hortaleza",
@@ -85,7 +105,9 @@
     "population": 180462,
     "area": 2741.98,
     "density": 65.81,
-    "treesPerCapita": 0.29098646806529904
+    "treesPerCapita": 0.29098646806529904,
+    "treesPerDensity": 797.9334447652333,
+    "treesPerArea": 19.151124369980817
   },
   {
     "name": "fuencarral-el pardo",
@@ -93,7 +115,9 @@
     "population": 238756,
     "area": 23783.84,
     "density": 10.04,
-    "treesPerCapita": 0.23877515120038867
+    "treesPerCapita": 0.23877515120038867,
+    "treesPerDensity": 5678.187250996017,
+    "treesPerArea": 2.3969636526313667
   },
   {
     "name": "ciudad lineal",
@@ -101,7 +125,9 @@
     "population": 212529,
     "area": 1142.57,
     "density": 186.01,
-    "treesPerCapita": 0.18501475092810862
+    "treesPerCapita": 0.18501475092810862,
+    "treesPerDensity": 211.3918606526531,
+    "treesPerArea": 34.414521648564204
   },
   {
     "name": "salamanca",
@@ -109,7 +135,9 @@
     "population": 143800,
     "area": 539.24,
     "density": 266.67,
-    "treesPerCapita": 0.15522948539638387
+    "treesPerCapita": 0.15522948539638387,
+    "treesPerDensity": 83.70645366932912,
+    "treesPerArea": 41.395297084785994
   },
   {
     "name": "tetuan",
@@ -117,7 +145,9 @@
     "population": 153789,
     "area": 537.47,
     "density": 286.13,
-    "treesPerCapita": 0.10023473720487161
+    "treesPerCapita": 0.10023473720487161,
+    "treesPerDensity": 53.874113165344426,
+    "treesPerArea": 28.6806705490539
   },
   {
     "name": "carabanchel",
@@ -125,7 +155,9 @@
     "population": 243998,
     "area": 1404.83,
     "density": 173.68,
-    "treesPerCapita": 0.1742596250788941
+    "treesPerCapita": 0.1742596250788941,
+    "treesPerDensity": 244.81229847996315,
+    "treesPerArea": 30.266295566011546
   },
   {
     "name": "centro",
@@ -133,7 +165,9 @@
     "population": 131928,
     "area": 522.82,
     "density": 252.34,
-    "treesPerCapita": 0.088116245224668
+    "treesPerCapita": 0.088116245224668,
+    "treesPerDensity": 46.06879606879607,
+    "treesPerArea": 22.235186106116824
   },
   {
     "name": "arganzuela",
@@ -141,7 +175,9 @@
     "population": 151965,
     "area": 646.22,
     "density": 235.16,
-    "treesPerCapita": 0.1590432007370118
+    "treesPerCapita": 0.1590432007370118,
+    "treesPerDensity": 102.77683279469298,
+    "treesPerArea": 37.40057565534957
   },
   {
     "name": "villaverde",
@@ -149,7 +185,9 @@
     "population": 142608,
     "area": 2018.76,
     "density": 70.64,
-    "treesPerCapita": 0.2884690900931224
+    "treesPerCapita": 0.2884690900931224,
+    "treesPerDensity": 582.361268403171,
+    "treesPerArea": 20.37785571340823
   },
   {
     "name": "latina",
@@ -157,7 +195,9 @@
     "population": 233808,
     "area": 2542.72,
     "density": 91.95,
-    "treesPerCapita": 0.1693911243413399
+    "treesPerCapita": 0.1693911243413399,
+    "treesPerDensity": 430.7232191408374,
+    "treesPerArea": 15.575840045305815
   },
   {
     "name": "san blas-canillejas",
@@ -165,6 +205,8 @@
     "population": 154357,
     "area": 2229.24,
     "density": 69.24,
-    "treesPerCapita": 0.26014369286783234
+    "treesPerCapita": 0.26014369286783234,
+    "treesPerDensity": 579.9393414211439,
+    "treesPerArea": 18.012865371157886
   }
 ]
