@@ -184,10 +184,10 @@
       const treesPerAreaColorScale = d3.scaleQuantize([0, maxTreesPerArea], d3.schemeGreens[9])
       const treesPerDensityColorScale = d3.scaleQuantize([0, maxTreesPerDensity], d3.schemeGreens[9])
 
-      const width = 300, height = 500
       // const width = document.body.getBoundingClientRect().width / 3 * 2
       // const height = document.body.getBoundingClientRect().height - 10
-
+      
+      const width = 300, height = 500
       const bounds = d3.geoBounds(districts)
       const center = d3.geoCentroid(districts)
 
@@ -289,10 +289,6 @@
           .attr('fill', (d, i) => consumptionColorScale(d.length))
 
       const districtsMap = d3.select('#districts-map').attr('width', width).attr('height', height);
-      const consumptionHeatmap = d3.select('#consumption-heatmap').attr('width', width).attr('height', height);
-      const canvas = consumptionHeatmap.node(),
-        context = canvas.getContext("2d")
-      const heat = simpleheat(canvas)
       districtsMap.attr('width', width)
         .attr('height', height)
         .attr("viewBox", [0, 0, width, height])
@@ -301,8 +297,12 @@
         .enter().append('path')
         .attr('fill', 'lightgrey')
         .attr('d', path)
-
-
+      
+      
+      const consumptionHeatmap = d3.select('#consumption-heatmap').attr('width', width).attr('height', height);
+      const canvas = consumptionHeatmap.node(),
+        context = canvas.getContext("2d")
+      const heat = simpleheat(canvas)
       heat.data(consumption.map(c => {
         const [lat, lon] = projection([c.longitude, c.latitude])
         return [lat, lon, c.consumption]
