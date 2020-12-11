@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <title>Madrid Trees</title>
+  <!-- <base href="https://christian-fei.github.io/greemta-challenge/"> -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 95vh;
+      width: 95vw;
+    }
+
+    body {
+      padding: 0.5em;
+    }
+
+    .sidebar {
+      min-width: 15em;
+    }
+
+    path {
+      transition: all .3s ease;
+    }
+
+    path:hover {
+      fill-opacity: 0.3;
+      fill: black;
+    }
+  </style>
+  <link rel="stylesheet" href="./style.css">
+  <script>
+    const prod = /github/.test(window.location.href)
+    if (prod) {
+      document.write("<base href=" + 'https://' + document.location.host + '/' + location.href.split('/')[3] + '/' + " />");
+    }
+    // document.head.querySelector('base').remove()
+  </script>
+</head>
+
+<body>
+  <h1 class="text-4xl mb-8">Socio-economic impact of trees</h1>
+  <p class="mt-4 text-xl">
+    <!-- <blockquote>Correlation does not imply causation</blockquote> -->
+    <a class="mt-4 mb-4 text-xl bg-blue-600 p-1 text-white" href="/web/index.html">Infographics about the green in Madrid can be found here</a>
+  </p>
+
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://unpkg.com/topojson@3"></script>
+  <script src="https://unpkg.com/d3-hexbin@0.2.2/build/d3-hexbin.js"></script>
+  <script src="https://unpkg.com/simpleheat@0.4.0/simpleheat.js"></script>
+  <script>
+    ; (async function main() {
+      const github = /github/.test(window.location.href)
+      const prefix = github ? `/${location.href.split('/')[3]}` : ''
+      let [districtsInfo, districtsTrees, districts, consumption] = await Promise.all([
+        d3.json(prefix + '/data/districts-info.json'),
+        d3.json(prefix + '/data/districts-trees.json'),
+        d3.json(prefix + '/data/districts.geojson'),
+        d3.dsv(';', prefix + '/datasets/consumo_energia_edificios.csv'),
+      ])
+      districts.features = districts.features.map(d => {
+        d.properties.name = d.properties.name.toLowerCase()
+        return d
+      })
+
+      window.districts = districts
+
+    })();
+  </script>
+</body>
+
+</html>

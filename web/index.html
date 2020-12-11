@@ -55,58 +55,45 @@
 
 <body>
   <h1 class="text-4xl mb-8">A green exploration of Madrid</h1>
-  <small>Best viewed on a desktop</small>
-
-  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
-    <!-- <div class=" sidebar bg-gray-50 p-2">
-      <div id="consumption-tooltip" class="tooltip"></div>
-    </div>
- -->
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Consumption (hexbin)</h1>
-      <svg id="legend-consumption"></svg>
-      <div class="overflow-hidden">
-        <svg id="consumption-map" class="map"></svg>
-      </div>
-    </div>
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Consumption (heatmap)</h1>
-      <!-- <svg id="legend-consumption-heatmap"></svg> -->
-      <div class=" relative">
-        <svg id="districts-map" class="map"></svg>
-        <canvas id="consumption-heatmap" class="map absolute top-0 "></canvas>
-      </div>
-    </div>
-  </div>
+  <!-- <small>Best viewed on a desktop</small> -->
+  <p class="mt-4 mb-8 text-xl font-bold">
+    <a class="mt-4 mb-4 text-xl bg-blue-600 p-1 text-white" href="/web/impact.html">Infographics about the socio-enconomic impact can be found here</a>
+  </p>
+  <p class="mt-4 mb-4 text-xl font-bold">
+    The infographics below visualize different aspects of the green in relation to the population.
+    <br>
+    <br>
+    This can be used to get a grasp of the city of Madrid.
+  </p>
 
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
     <div class="sidebar bg-gray-50 p-2">
       <div id="trees-tooltip" class="tooltip"></div>
     </div>
 
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Trees<br> by district</h1>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees<br> by district</h1>
       <svg id="legend-trees"></svg>
       <div class="overflow-hidden">
         <svg id="trees-map" class="map"></svg>
       </div>
     </div>
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Trees per capita<br> by district</h1>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees per capita<br> by district</h1>
       <svg id="legend-treespercapita"></svg>
       <div class="overflow-hidden">
         <svg id="treespercapita-map" class="map"></svg>
       </div>
     </div>
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Trees per area<br> by district</h1>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees per area<br> by district</h1>
       <svg id="legend-treesperarea"></svg>
       <div class="overflow-hidden">
         <svg id="treesperarea-map" class="map"></svg>
       </div>
     </div>
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Trees per density<br> by district</h1>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees per density<br> by district</h1>
       <svg id="legend-treesperdensity"></svg>
       <div class="overflow-hidden">
         <svg id="treesperdensity-map" class="map"></svg>
@@ -118,21 +105,49 @@
       <div id="people-tooltip" class="tooltip"></div>
     </div>
 
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Population<br> by district</h1>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Population<br> by district</h1>
       <svg id="legend-population"></svg>
       <div class="overflow-hidden">
         <svg id="population-map" class="map"></svg>
       </div>
     </div>
-    <div class="">
-      <h1 class="text-2xl mt-8 mb-8">Population density<br> by district</h1>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Population density<br> by district</h1>
       <svg id="legend-density"></svg>
       <div class="overflow-hidden">
         <svg id="density-map" class="map"></svg>
       </div>
     </div>
   </div>
+
+  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Consumption (hexbin)</h1>
+      <svg id="legend-consumption"></svg>
+      <div class="overflow-hidden">
+        <svg id="consumption-map" class="map"></svg>
+      </div>
+    </div>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Consumption (heatmap)</h1>
+      <div class=" relative">
+        <svg id="districts-map" class="map"></svg>
+        <canvas id="consumption-heatmap" class="map absolute top-0 "></canvas>
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-4 mb-8 text-xl font-bold">
+    <a class="mt-4 mb-4 text-xl bg-blue-600 p-1 text-white" href="/web/impact.html">Infographics about the socio-enconomic impact can be found here</a>
+  </p>
+  <p class="mt-4 mb-4 text-xl font-bold">
+    The infographics above visualize different aspects of the green in relation to the population.
+    <br>
+    <br>
+    This can be used to get a grasp of the city of Madrid.
+  </p>
+
 
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
@@ -142,7 +157,6 @@
     ; (async function main() {
       const github = /github/.test(window.location.href)
       const prefix = github ? `/${location.href.split('/')[3]}` : ''
-      console.log({ github, prefix })
       let [districtsInfo, districtsTrees, districts, consumption] = await Promise.all([
         d3.json(prefix + '/data/districts-info.json'),
         d3.json(prefix + '/data/districts-trees.json'),
@@ -291,7 +305,6 @@
 
       heat.data(consumption.map(c => {
         const [lat, lon] = projection([c.longitude, c.latitude])
-        console.log(lat, lon, c.consumption)
         return [lat, lon, c.consumption]
       }))
       // set point radius and blur radius (25 and 15 by default)
