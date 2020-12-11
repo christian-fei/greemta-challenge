@@ -90,6 +90,13 @@
         <svg id="treespercapita-map" class="map"></svg>
       </div>
     </div>
+    <div class="">
+      <h1 class="text-2xl mt-8 mb-8">Trees per area<br> by district</h1>
+      <svg id="legend-treesperarea"></svg>
+      <div class="overflow-hidden">
+        <svg id="treesperarea-map" class="map"></svg>
+      </div>
+    </div>
     <div class="sidebar bg-gray-50 p-2">
       <div id="trees-tooltip" class="tooltip"></div>
     </div>
@@ -116,12 +123,13 @@
       const maxDensity = Math.max(...districtsInfo.map(d => d.density))
       const maxTrees = Math.max(...districtsTrees.map(d => d.trees))
       const maxTreesPerCapita = Math.max(...districtsTrees.map(d => d.treesPerCapita))
+      const maxTreesPerArea = Math.max(...districtsTrees.map(d => d.treesPerArea))
+
       const populationColorScale = d3.scaleQuantize([0, maxPopulation], d3.schemeReds[9])
       const densityColorScale = d3.scaleQuantize([0, maxDensity], d3.schemeReds[9])
       const treesColorScale = d3.scaleQuantize([0, maxTrees], d3.schemeGreens[9])
       const treesPerCapitaColorScale = d3.scaleQuantize([0, maxTreesPerCapita], d3.schemeGreens[9])
-
-      window.populationColorScale = populationColorScale
+      const treesPerAreaColorScale = d3.scaleQuantize([0, maxTreesPerArea], d3.schemeGreens[9])
 
       const width = 300, height = 500
       // const width = document.body.getBoundingClientRect().width / 3 * 2
@@ -143,6 +151,7 @@
       const densityMap = d3.select('#density-map')
       const treesMap = d3.select('#trees-map')
       const treesPerCapitaMap = d3.select('#treespercapita-map')
+      const treesPerAreaMap = d3.select('#treesperarea-map')
 
       var legendRectSize = 12
       var legendSpacing = 2
@@ -198,106 +207,101 @@
         .style('fill', treesPerCapitaColorScale)
         .style('stroke', treesPerCapitaColorScale)
         .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
+      d3.select('#legend-treesperarea')
+        .attr('height', legendRectSize)
+        .selectAll('.legend')
+        .data(treesPerAreaColorScale.ticks())
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', treesPerAreaColorScale)
+        .style('stroke', treesPerAreaColorScale)
+        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
 
       const peopleTooltip = d3.select('#people-tooltip')
       const treesTooltip = d3.select('#trees-tooltip')
       peopleTooltip.html('hover over a district to see information about it')
       treesTooltip.html('hover over a district to see information about it')
 
-      setupPeopleMap(populationMap, 'population')
-      setupPeopleMap(densityMap, 'density')
-      setupTreesMap(treesMap, treesPerCapitaMap)
+      setupPeopleMap([
+        [populationMap, populationColorScale, 'population'],
+        [densityMap, densityColorScale, 'density'],
+      ])
+      setupTreesMap([
+        [treesMap, treesColorScale, 'trees'],
+        [treesPerCapitaMap, treesPerCapitaColorScale, 'treesPerCapita'],
+        [treesPerAreaMap, treesPerAreaColorScale, 'treesPerArea'],
+      ])
 
-      function setupPeopleMap(map, type) {
-        map.attr('width', width)
-          .attr('height', height)
-          .attr("viewBox", [0, 0, width, height])
-        map.call(d3.zoom()
-          .scaleExtent([1, 8])
-          .on("zoom", function zoomed(event) {
-            const { transform } = event;
-            map.attr("transform", transform);
-            map.attr("stroke-width", 1 / transform.k);
-          }))
+      function setupPeopleMap(pairs) {
+        for (const [map, colorScale, prop] of pairs) {
+          map.attr('width', width)
+            .attr('height', height)
+            .attr("viewBox", [0, 0, width, height])
+          map.call(d3.zoom()
+            .scaleExtent([1, 8])
+            .on("zoom", function zoomed(event) {
+              const { transform } = event;
+              map.attr("transform", transform);
+              map.attr("stroke-width", 1 / transform.k);
+            }))
+            map.selectAll('path')
+              .data(districts.features)
+              .enter().append('path')
+              .attr('fill', (item) => {
+                const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
+                if (!district) {
+                  console.log('district not found', item.properties.name)
+                  return 'black'
+                }
+                return colorScale(district[prop])
+              })
+              .attr('d', path)
+              .on('mouseenter', (e, item) => {
+                const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
+                const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
+                peopleTooltip.html(text)
+              })
+              .on('mouseout', () => {
+                peopleTooltip.html('hover over a district to see information about it')
+              })
+        }
 
-        map.selectAll('path')
-          .data(districts.features)
-          .enter().append('path')
-          .attr('fill', (item) => {
-            const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
-            if (!district) {
-              console.log('district not found', item.properties.name)
-              return 'black'
-            }
-            return type === 'density' ? densityColorScale(district.density) : populationColorScale(district.population)
-          })
-          .attr('d', path)
-          .on('mouseenter', (e, item) => {
-            const district = districtsInfo.find(d => d.name.startsWith(item.properties.name))
-            const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
-            peopleTooltip.html(text)
-          })
-          .on('mouseout', () => {
-            peopleTooltip.html('hover over a district to see information about it')
-          })
       }
 
-      function setupTreesMap(treesMap, treesPerCapitaMap) {
-        treesMap.attr('width', width)
-          .attr('height', height)
-          .attr("viewBox", [0, 0, width, height])
-        treesPerCapitaMap.attr('width', width)
-          .attr('height', height)
-          .attr("viewBox", [0, 0, width, height])
-        treesMap.call(d3.zoom()
-          .scaleExtent([1, 8])
-          .on("zoom", function zoomed(event) {
-            const { transform } = event;
-            treesMap.attr("transform", transform);
-            treesMap.attr("stroke-width", 1 / transform.k);
-          }))
-        treesPerCapitaMap.call(d3.zoom()
-          .scaleExtent([1, 8])
-          .on("zoom", function zoomed(event) {
-            const { transform } = event;
-            treesPerCapitaMap.attr("transform", transform);
-            treesPerCapitaMap.attr("stroke-width", 1 / transform.k);
-          }))
-
-        treesMap.selectAll('path')
-          .data(districts.features)
-          .enter().append('path')
-          .attr('fill', (item) => {
-            const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
-            return treesColorScale(district.trees)
-          })
-          .attr('d', path)
-          .on('mouseenter', (e, item) => {
-            const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
-            const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
-            treesTooltip.html(text)
-          })
-          .on('mouseout', () => {
-            treesTooltip.html('hover over a district to see information about it')
-          })
-        treesPerCapitaMap.selectAll('path')
-          .data(districts.features)
-          .enter().append('path')
-          .attr('fill', (item) => {
-            const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
-            return treesPerCapitaColorScale(district.treesPerCapita)
-          })
-          .attr('d', path)
-          .on('mouseenter', (e, item) => {
-            const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
-            const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
-            treesTooltip.html(text)
-          })
-          .on('mouseout', () => {
-            treesTooltip.html('hover over a district to see information about it')
-          })
+      function setupTreesMap(pairs) {
+        for (const [map, colorScale, prop] of pairs) {
+          map.attr('width', width)
+            .attr('height', height)
+            .attr("viewBox", [0, 0, width, height])
+          map.call(d3.zoom()
+            .scaleExtent([1, 8])
+            .on("zoom", function zoomed(event) {
+              const { transform } = event;
+              map.attr("transform", transform);
+              map.attr("stroke-width", 1 / transform.k);
+            }))
+          map.selectAll('path')
+            .data(districts.features)
+            .enter().append('path')
+            .attr('fill', (item) => {
+              const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
+              return colorScale(district[prop])
+            })
+            .attr('d', path)
+            .on('mouseenter', (e, item) => {
+              const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
+              const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
+              treesTooltip.html(text)
+            })
+            .on('mouseout', () => {
+              treesTooltip.html('hover over a district to see information about it')
+            })
+        }
       }
-
     })();
   </script>
 </body>
