@@ -153,78 +153,18 @@
       const treesPerCapitaMap = d3.select('#treespercapita-map')
       const treesPerAreaMap = d3.select('#treesperarea-map')
 
-      var legendRectSize = 12
-      var legendSpacing = 2
-      d3.select('#legend-population')
-        .attr('height', legendRectSize)
-        .selectAll('.legend')
-        .data(populationColorScale.ticks())
-        .enter()
-        .append('g')
-        .attr('class', 'legend')
-        .append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', populationColorScale)
-        .style('stroke', populationColorScale)
-        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
-      d3.select('#legend-density')
-        .attr('height', legendRectSize)
-        .selectAll('.legend')
-        .data(densityColorScale.ticks())
-        .enter()
-        .append('g')
-        .attr('class', 'legend')
-        .append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', densityColorScale)
-        .style('stroke', densityColorScale)
-        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
-      d3.select('#legend-trees')
-        .attr('height', legendRectSize)
-        .selectAll('.legend')
-        .data(treesColorScale.ticks())
-        .enter()
-        .append('g')
-        .attr('class', 'legend')
-        .append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', treesColorScale)
-        .style('stroke', treesColorScale)
-        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
-      d3.select('#legend-treespercapita')
-        .attr('height', legendRectSize)
-        .selectAll('.legend')
-        .data(treesPerCapitaColorScale.ticks())
-        .enter()
-        .append('g')
-        .attr('class', 'legend')
-        .append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', treesPerCapitaColorScale)
-        .style('stroke', treesPerCapitaColorScale)
-        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
-      d3.select('#legend-treesperarea')
-        .attr('height', legendRectSize)
-        .selectAll('.legend')
-        .data(treesPerAreaColorScale.ticks())
-        .enter()
-        .append('g')
-        .attr('class', 'legend')
-        .append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .style('fill', treesPerAreaColorScale)
-        .style('stroke', treesPerAreaColorScale)
-        .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
-
       const peopleTooltip = d3.select('#people-tooltip')
       const treesTooltip = d3.select('#trees-tooltip')
       peopleTooltip.html('hover over a district to see information about it')
       treesTooltip.html('hover over a district to see information about it')
+
+      setupLegend([
+        [d3.select('#legend-population'), populationColorScale],
+        [d3.select('#legend-density'), densityColorScale],
+        [d3.select('#legend-trees'), treesColorScale],
+        [d3.select('#legend-treespercapita'), treesPerCapitaColorScale],
+        [d3.select('#legend-treesperarea'), treesPerAreaColorScale]
+      ])
 
       setupPeopleMap([
         [populationMap, populationColorScale, 'population'],
@@ -272,6 +212,27 @@
 
       }
 
+      function setupLegend (pairs) {
+        const legendRectSize = 12
+        const legendSpacing = 2
+
+        for (const [legend, colorScale] of pairs) {
+          legend
+            .attr('height', legendRectSize)
+            .selectAll('.legend')
+            .data(colorScale.ticks())
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', colorScale)
+            .style('stroke', colorScale)
+            .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
+        }
+      }
+      
       function setupTreesMap(pairs) {
         for (const [map, colorScale, prop] of pairs) {
           map.attr('width', width)
