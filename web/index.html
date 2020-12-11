@@ -234,12 +234,16 @@
             .attr('d', path)
             .on('mouseenter', (e, item) => {
               const district = districtsTrees.find(d => d.name.startsWith(item.properties.name))
-              const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
+              const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${format(district[curr])}<br>`, '')
               tooltip.html(text)
             })
             .on('mouseout', () => {
               tooltip.html('hover over a district to see information about it')
             })
+        }
+        function format (value) {
+          if (Number.isFinite(value)) return value.toFixed(2)
+          return value
         }
       }
     })();
