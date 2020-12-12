@@ -200,8 +200,7 @@ select { /* 1 */
 Correct the inability to style clickable types in iOS and Safari.
 */
 
-button,
-[type='button'] {
+button {
   -webkit-appearance: button;
 }
 
@@ -518,18 +517,9 @@ video {
   background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
 }
 
-.bg-red-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(220, 38, 38, var(--tw-bg-opacity));
-}
-
 .bg-blue-600 {
   --tw-bg-opacity: 1;
   background-color: rgba(37, 99, 235, var(--tw-bg-opacity));
-}
-
-.flex {
-  display: flex;
 }
 
 .table {
@@ -549,11 +539,6 @@ video {
   line-height: 1.75rem;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
@@ -565,10 +550,6 @@ video {
 
 .mb-4 {
   margin-bottom: 1rem;
-}
-
-.mt-8 {
-  margin-top: 2rem;
 }
 
 .mb-8 {
