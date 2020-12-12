@@ -119,7 +119,7 @@
           const info = districtsInfo.find(d => d.name.startsWith(item.properties.name))
           const district = crimes.find(d => d.name.startsWith(item.properties.name))
           const text = 
-            Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
+            Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${format(district[curr])}<br>`, '')
             // +
             // '<hr class="mt-4 mb-4">'
             // +
@@ -146,6 +146,14 @@
         return (mulSum - (sum1 * sum2 / n)) / dense
         /* https://gist.github.com/matt-west/6500993#gistcomment-2743187 */
       }
+      function format (value) {
+          if (Number.isFinite(value)) {
+            const formatted = value.toFixed(2)
+            return formatted.endsWith('.00') ? (+formatted).toFixed(0) : formatted
+          }
+          return value
+        }
+
     })();
   </script>
 </body>
