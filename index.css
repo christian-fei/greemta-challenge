@@ -3,6 +3,38 @@
 @tailwind utilities;
 /* @tailwind screens; */
 
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 95vh;
+  width: 95vw;
+}
+
+body {
+  padding: 0.5em;
+}
+
+.sidebar {
+  width: 18em;
+}
+
+path {
+  transition: all .3s ease;
+}
+
+path:hover {
+  fill-opacity: 0.3;
+  fill: black;
+}
+
 html, body {
   min-height: 100%;
 }
@@ -11,3 +43,4 @@ html, body {
   height: 400px;
   overflow-y: scroll;
 }
+

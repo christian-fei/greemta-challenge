@@ -634,12 +634,6 @@ video {
   transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.transition {
-  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
 @-webkit-keyframes spin {
   to {
     transform: rotate(360deg);
@@ -708,6 +702,38 @@ video {
 
 /* @tailwind screens; */
 
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 95vh;
+  width: 95vw;
+}
+
+body {
+  padding: 0.5em;
+}
+
+.sidebar {
+  width: 18em;
+}
+
+path {
+  transition: all .3s ease;
+}
+
+path:hover {
+  fill-opacity: 0.3;
+  fill: black;
+}
+
 html, body {
   min-height: 100%;
 }
@@ -736,3 +762,4 @@ html, body {
 
 @media (min-width: 1536px) {
 }
+
