@@ -57,16 +57,18 @@
   <h1 class="text-4xl mb-8">Socio-economic impact of trees</h1>
   <p class="mt-4 mb-8 text-xl">
     <!-- <blockquote>Correlation does not imply causation</blockquote> -->
-    <a class="mt-4 mb-4 text-xl bg-blue-600 p-1 text-white" href="./index.html">Infographics about the green in Madrid can be found here</a>
+    <a class="mt-4 mb-4 text-xl bg-blue-600 p-1 text-white" href="./index.html">An exploration about the green in Madrid can be found here</a>
   </p>
 
   <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
     <div class="sidebar bg-gray-50 p-2">
+      <div id="crimes-trees-correlation"></div>
+      <hr class="mt-2 mb-2">
       <div id="crimes-tooltip" class="tooltip"></div>
     </div>
 
     <div class="pl-2 pr-2">
-      <h1 class="text-4xl mb-8">Crimes<br> by district</h1>
+      <h1 class="text-4xl">Crimes (normalized to population)<br> by district</h1>
       <div class="overflow-hidden">
         <svg id="crimes-map" class="map"></svg>
       </div>
@@ -82,19 +84,38 @@
     ; (async function main() {
       const github = /github/.test(window.location.href)
       const prefix = github ? `/${location.href.split('/')[3]}` : ''
-      let [districts, crimes, districtsInfo] = await Promise.all([
+      let [districts, crimes, districtsInfo, treesInfo] = await Promise.all([
         d3.json(prefix + '/data/districts.geojson'),
         d3.json(prefix + '/data/districts-crimes.json'),
         d3.json(prefix + '/data/districts-info.json'),
+        d3.json(prefix + '/data/districts-trees.json'),
       ])
       districts.features = districts.features.map(d => {
         d.properties.name = d.properties.name.toLowerCase()
         return d
       })
 
+      districtsInfo.sort((a,b) => a.name.localeCompare(b.name))
+      treesInfo.sort((a,b) => a.name.localeCompare(b.name))
+
+      const maxPopulation = Math.max(...districtsInfo.map(d => d.population))
+
+      crimes = crimes.map((c) => {
+        const district = districtsInfo.find(i => i.name.toLowerCase().startsWith(c.name.toLowerCase()))
+        const trees = treesInfo.find(i => i.name.toLowerCase().startsWith(c.name.toLowerCase()))
+        return Object.assign(c, {
+          'Normalized Related to people': c['Related to people'] / maxPopulation * district.population,
+          ...district,
+          ...trees
+        })
+      })
+      const correlation = calcCorrelation(crimes.map(c => c['Related to people']), crimes.map(c => c.treesPerCapita))
+      console.log(correlation)
+      d3.select('#crimes-trees-correlation').html(`There seems to be a <b>moderate inverse relationship</b> between <i>"Crimes related to people"</i> and the <i>"Number of trees"</i> in a given district (<b>${correlation}</b>)`)
+
       window.districts = districts
 
-      const width = 300, height = 500
+      const width = 600, height = 700
       const bounds = d3.geoBounds(districts)
       const center = d3.geoCentroid(districts)
 
@@ -107,6 +128,8 @@
 
       const path = d3.geoPath().projection(projection)
 
+      const crimesTooltip = d3.select('#crimes-tooltip')
+      crimesTooltip.html('hover over a district to see information about it')
 
       const crimesColorScale = d3.scaleLinear().range(["yellow", "red"])
         .domain([0, Math.max(...crimes.map(d => d['Related to people']))])
@@ -125,8 +148,37 @@
           return crimesColorScale(c['Related to people'])
         })
         .attr('d', path)
+        .on('mouseenter', (e, item) => {
+          const info = districtsInfo.find(d => d.name.startsWith(item.properties.name))
+          const district = crimes.find(d => d.name.startsWith(item.properties.name))
+          const text = 
+            Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${district[curr]}<br>`, '')
+            // +
+            // '<hr class="mt-4 mb-4">'
+            // +
+            // Object.keys(info).filter(k => k!=='name').reduce((acc, curr) => acc + `<b>${curr}</b> ${info[curr]}<br>`, '')
+          crimesTooltip.html(text)
+        })
+        .on('mouseout', () => {
+          crimesTooltip.html('hover over a district to see information about it')
+        })
 
-
+      function calcCorrelation(d1, d2) {
+        let { min, pow, sqrt } = Math
+        let add = (a, b) => a + b
+        let n = min(d1.length, d2.length)
+        if (n === 0) { return 0 }
+        [d1, d2] = [d1.slice(0, n), d2.slice(0, n)]
+        let [sum1, sum2] = [d1, d2].map(l => l.reduce(add))
+        let [pow1, pow2] = [d1, d2].map(l => l.reduce((a, b) => a + pow(b, 2), 0))
+        let mulSum = d1.map((n, i) => n * d2[i]).reduce(add)
+        let dense = sqrt((pow1 - pow(sum1, 2) / n) * (pow2 - pow(sum2, 2) / n))
+        if (dense === 0) {
+          return 0
+        }
+        return (mulSum - (sum1 * sum2 / n)) / dense
+        /* https://gist.github.com/matt-west/6500993#gistcomment-2743187 */
+      }
     })();
   </script>
 </body>
