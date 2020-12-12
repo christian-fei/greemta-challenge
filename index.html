@@ -267,13 +267,6 @@
         .attr('width', width)
         .attr('height', height)
         .attr("viewBox", [0, 0, width, height])
-        .call(d3.zoom()
-          .scaleExtent([1, 8])
-          .on("zoom", function zoomed(event) {
-            const { transform } = event;
-            if (transform.k > 2.5) return
-            consumptionMap.attr("transform", transform);
-          }))
       consumptionMap
         .selectAll('path')
         .data(districts.features)
@@ -341,14 +334,6 @@
           map.attr('width', width)
             .attr('height', height)
             .attr("viewBox", [0, 0, width, height])
-          map.call(d3.zoom()
-            .scaleExtent([1, 8])
-            .on("zoom", function zoomed(event) {
-              const { transform } = event;
-              if (transform.k > 2.5) return
-              map.attr("transform", transform);
-              // map.attr("stroke-width", 1 / transform.k);
-            }))
           map.selectAll('path')
             .data(districts.features)
             .enter().append('path')
