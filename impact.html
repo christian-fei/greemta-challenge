@@ -81,7 +81,7 @@
       })
       const correlation = calcCorrelation(crimes.map(c => c['Related to people']), crimes.map(c => c.treesPerCapita))
       console.log(correlation)
-      d3.select('#crimes-trees-correlation').html(`There seems to be a <b>moderate inverse relationship</b> between <i>"Crimes related to people"</i> and the <i>"Trees per capita"</i> in a given district (<b>${correlation}</b> pearson coefficient)`)
+      d3.select('#crimes-trees-correlation').html(`There seems to be a <b>moderate inverse relationship</b> between <i>"Crimes related to people"</i> and the <i>"Trees per capita"</i> in a given district (<b>${format(correlation)}</b> pearson coefficient)`)
 
       window.districts = districts
 
