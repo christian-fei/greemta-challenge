@@ -1,0 +1,128 @@
+[
+  {
+    "name": "centro",
+    "satisfaction": 77.3,
+    "qualityOfLife": 73.6,
+    "greenAreas": 6.5
+  },
+  {
+    "name": "arganzuela",
+    "satisfaction": 81.3,
+    "qualityOfLife": 77.9,
+    "greenAreas": 7.0
+  },
+  {
+    "name": "retiro",
+    "satisfaction": 82.2,
+    "qualityOfLife": 80.3,
+    "greenAreas": 7.6
+  },
+  {
+    "name": "salamanca",
+    "satisfaction": 78.2,
+    "qualityOfLife": 77.5,
+    "greenAreas": 6.4
+  },
+  {
+    "name": "chamartin",
+    "satisfaction": 84.0,
+    "qualityOfLife": 80.5,
+    "greenAreas": 6.7
+  },
+  {
+    "name": "tetuan",
+    "satisfaction": 66.5,
+    "qualityOfLife": 67.1,
+    "greenAreas": 6.8
+  },
+  {
+    "name": "chamberi",
+    "satisfaction": 79.1,
+    "qualityOfLife": 80.0,
+    "greenAreas": 6.9
+  },
+  {
+    "name": "fuencarral-el pardo",
+    "satisfaction": 73.6,
+    "qualityOfLife": 75.8,
+    "greenAreas": 6.4
+  },
+  {
+    "name": "moncloa-aravaca",
+    "satisfaction": 81.0,
+    "qualityOfLife": 79.5,
+    "greenAreas": 7.2
+  },
+  {
+    "name": "latina",
+    "satisfaction": 68.5,
+    "qualityOfLife": 68.6,
+    "greenAreas": 7.1
+  },
+  {
+    "name": "carabanchel",
+    "satisfaction": 68.4,
+    "qualityOfLife": 66.2,
+    "greenAreas": 7.0
+  },
+  {
+    "name": "usera",
+    "satisfaction": 60.1,
+    "qualityOfLife": 61.8,
+    "greenAreas": 6.7
+  },
+  {
+    "name": "puente de vallecas",
+    "satisfaction": 65.4,
+    "qualityOfLife": 60,
+    "greenAreas": 6.5
+  },
+  {
+    "name": "moratalaz",
+    "satisfaction": 78.6,
+    "qualityOfLife": 76.4,
+    "greenAreas": 7.9
+  },
+  {
+    "name": "ciudad lineal",
+    "satisfaction": 66.9,
+    "qualityOfLife": 69.5,
+    "greenAreas": 6.9
+  },
+  {
+    "name": "hortaleza",
+    "satisfaction": 75.2,
+    "qualityOfLife": 75.7,
+    "greenAreas": 6.9
+  },
+  {
+    "name": "villaverde",
+    "satisfaction": 55,
+    "qualityOfLife": 56.3,
+    "greenAreas": 6.2
+  },
+  {
+    "name": "villa de vallecas",
+    "satisfaction": 71.3,
+    "qualityOfLife": 69,
+    "greenAreas": 6.2
+  },
+  {
+    "name": "vicalvaro",
+    "satisfaction": 72.6,
+    "qualityOfLife": 72.1,
+    "greenAreas": 7.5
+  },
+  {
+    "name": "san blas-canillejas",
+    "satisfaction": 67.8,
+    "qualityOfLife": 70.3,
+    "greenAreas": 6.9
+  },
+  {
+    "name": "barajas",
+    "satisfaction": 79,
+    "qualityOfLife": 80.9,
+    "greenAreas": 7.2
+  }
+]
