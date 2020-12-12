@@ -367,7 +367,10 @@
             })
         }
         function format (value) {
-          if (Number.isFinite(value)) return value.toFixed(2)
+          if (Number.isFinite(value)) {
+            const formatted = value.toFixed(2)
+            return formatted.endsWith('.00') ? (+formatted).toFixed(0) : formatted
+          }
           return value
         }
       }
