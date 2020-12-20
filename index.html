@@ -23,10 +23,6 @@
 <body>
   <h1 class="text-4xl mb-8">Socio-economic impact of trees</h1>
   <p class="mt-4 mb-8 text-xl">
-    <!-- <blockquote>Correlation does not imply causation</blockquote> -->
-    <a class="mt-4 mb-4 text-xl bg-blue-600 p-1 text-white" href="./green.html">An exploration about the green in Madrid can be found here</a>
-  </p>
-  <p class="mt-4 mb-8 text-xl">
     The infographics below show various <i>potential correlations</i> about <b>crimes, happiness/satisfaction related to green areas</b> in Madrid.
   </p>
 
@@ -38,27 +34,114 @@
     </div>
 
     <div class="pl-2 pr-2">
-      <h1 class="text-4xl">Crimes (normalized to population)</h1>
+      <h1 class="text-4xl mb-8">Crimes (normalized to population)</h1>
+      <svg id="legend-crimes"></svg>
       <div class="overflow-hidden">
         <svg id="crimes-map" class="map"></svg>
       </div>
-      <svg id="legend-crimes"></svg>
+    </div>
+  </div>
+
+  <h1 class="text-4xl mb-8">A green exploration of Madrid</h1>
+  <p class="mt-4 mb-4 text-xl font-bold">
+    The infographics below visualize different aspects of the green in relation to the population.
+    <br>
+    <br>
+    This can be used to get a grasp of the city of Madrid.
+  </p>
+
+  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class="sidebar bg-gray-50 p-2">
+      <div class="trees-tooltip" class="tooltip"></div>
+    </div>
+
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees</h1>
+      <svg id="legend-trees"></svg>
+      <div class="overflow-hidden">
+        <svg id="trees-map" class="map"></svg>
+      </div>
+    </div>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees per capita</h1>
+      <svg id="legend-treespercapita"></svg>
+      <div class="overflow-hidden">
+        <svg id="treespercapita-map" class="map"></svg>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class="sidebar bg-gray-50 p-2">
+      <div class="trees-tooltip" class="tooltip"></div>
+    </div>
+
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees per area</h1>
+      <svg id="legend-treesperarea"></svg>
+      <div class="overflow-hidden">
+        <svg id="treesperarea-map" class="map"></svg>
+      </div>
+    </div>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Trees per density</h1>
+      <svg id="legend-treesperdensity"></svg>
+      <div class="overflow-hidden">
+        <svg id="treesperdensity-map" class="map"></svg>
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class=" sidebar bg-gray-50 p-2">
+      <div id="people-tooltip" class="tooltip"></div>
+    </div>
+
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Population</h1>
+      <svg id="legend-population"></svg>
+      <div class="overflow-hidden">
+        <svg id="population-map" class="map"></svg>
+      </div>
+    </div>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Population density</h1>
+      <svg id="legend-density"></svg>
+      <div class="overflow-hidden">
+        <svg id="density-map" class="map"></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-flow-col auto-cols-max md:auto-cols-min">
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Consumption (hexbin)</h1>
+      <svg id="legend-consumption"></svg>
+      <div class="overflow-hidden">
+        <svg id="consumption-map" class="map"></svg>
+      </div>
+    </div>
+    <div class="pl-2 pr-2">
+      <h1 class="text-4xl mb-8">Consumption (heatmap)</h1>
+      <div class=" relative">
+        <svg id="districts-map" class="map"></svg>
+        <canvas id="consumption-heatmap" class="map absolute top-0 "></canvas>
+      </div>
     </div>
   </div>
 
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://unpkg.com/topojson@3"></script>
-  <!-- <script src="https://unpkg.com/d3-hexbin@0.2.2/build/d3-hexbin.js"></script> -->
-  <!-- <script src="https://unpkg.com/simpleheat@0.4.0/simpleheat.js"></script> -->
+  <script src="https://unpkg.com/d3-hexbin@0.2.2/build/d3-hexbin.js"></script>
+  <script src="https://unpkg.com/simpleheat@0.4.0/simpleheat.js"></script>
   <script>
     ; (async function main() {
       const github = /github/.test(window.location.href)
       const prefix = github ? `/${location.href.split('/')[3]}` : ''
-      let [districts, crimes, districtsInfo, treesInfo] = await Promise.all([
+      let [districts, districtCrimes, districtsInfo, treesInfo, consumption] = await Promise.all([
         d3.json(prefix + '/data/districts.geojson'),
         d3.json(prefix + '/data/districts-crimes.json'),
         d3.json(prefix + '/data/districts-info.json'),
         d3.json(prefix + '/data/districts-trees.json'),
+        d3.dsv(';', prefix + '/datasets/consumo_energia_edificios.csv')
       ])
       districts.features = districts.features.map(d => {
         d.properties.name = d.properties.name.toLowerCase()
@@ -69,8 +152,22 @@
       treesInfo.sort((a,b) => a.name.localeCompare(b.name))
 
       const maxPopulation = Math.max(...districtsInfo.map(d => d.population))
+      const maxDensity = Math.max(...districtsInfo.map(d => d.density))
+      const maxTrees = Math.max(...treesInfo.map(d => d.trees))
+      const maxTreesPerCapita = Math.max(...treesInfo.map(d => d.treesPerCapita))
+      const maxTreesPerArea = Math.max(...treesInfo.map(d => d.treesPerArea))
+      const maxTreesPerDensity = Math.max(...treesInfo.map(d => d.treesPerDensity))
 
-      crimes = crimes.map((c) => {
+      const populationColorScale = d3.scaleQuantize([0, maxPopulation], d3.schemeReds[9])
+      const densityColorScale = d3.scaleQuantize([0, maxDensity], d3.schemeReds[9])
+      const treesColorScale = d3.scaleQuantize([0, maxTrees], d3.schemeGreens[9])
+      const treesPerCapitaColorScale = d3.scaleQuantize([0, maxTreesPerCapita], d3.schemeGreens[9])
+      const treesPerAreaColorScale = d3.scaleQuantize([0, maxTreesPerArea], d3.schemeGreens[9])
+      const treesPerDensityColorScale = d3.scaleQuantize([0, maxTreesPerDensity], d3.schemeGreens[9])
+      const crimesColorScale = d3.scaleLinear().range(["yellow", "red"])
+        .domain([0, Math.max(...districtCrimes.map(d => d['Related to people']))])
+
+      districtCrimes = districtCrimes.map((c) => {
         const district = districtsInfo.find(i => i.name.toLowerCase().startsWith(c.name.toLowerCase()))
         const trees = treesInfo.find(i => i.name.toLowerCase().startsWith(c.name.toLowerCase()))
         return Object.assign(c, {
@@ -79,13 +176,11 @@
           ...trees
         })
       })
-      const correlation = calcCorrelation(crimes.map(c => c['Related to people']), crimes.map(c => c.treesPerCapita))
+      const correlation = calcCorrelation(districtCrimes.map(c => c['Related to people']), districtCrimes.map(c => c.treesPerCapita))
       console.log(correlation)
       d3.select('#crimes-trees-correlation').html(`There seems to be a <b>moderate inverse relationship</b> between <i>"Crimes related to people"</i> and the <i>"Trees per capita"</i> in a given district (<b>${format(correlation)}</b> pearson coefficient)`)
 
-      window.districts = districts
-
-      const width = 600, height = 700
+      const width = 300, height = 500
       const bounds = d3.geoBounds(districts)
       const center = d3.geoCentroid(districts)
 
@@ -98,13 +193,21 @@
 
       const path = d3.geoPath().projection(projection)
 
+      const populationMap = d3.select('#population-map')
+      const densityMap = d3.select('#density-map')
+      const treesMap = d3.select('#trees-map')
+      const treesPerCapitaMap = d3.select('#treespercapita-map')
+      const treesPerAreaMap = d3.select('#treesperarea-map')
+      const treesPerDensityMap = d3.select('#treesperdensity-map')
+      const consumptionMap = d3.select('#consumption-map')
+
+      const peopleTooltip = d3.select('#people-tooltip')
+      const treesTooltip = d3.selectAll('.trees-tooltip')
       const crimesTooltip = d3.select('#crimes-tooltip')
+      peopleTooltip.html('hover over a district to see information about it')
+      treesTooltip.html('hover over a district to see information about it')
       crimesTooltip.html('hover over a district to see information about it')
 
-      const crimesColorScale = d3.scaleLinear().range(["yellow", "red"])
-        .domain([0, Math.max(...crimes.map(d => d['Related to people']))])
-
-      window.crimesColorScale = crimesColorScale
 
       const crimesMap = d3.select('#crimes-map').attr('width', width).attr('height', height);
       crimesMap.attr('width', width)
@@ -114,13 +217,13 @@
         .data(districts.features)
         .enter().append('path')
         .attr('fill', (d, i) => {
-          const c = crimes.find(c => c.name.toLowerCase().startsWith(d.properties.name.toLowerCase()))
+          const c = districtCrimes.find(c => c.name.toLowerCase().startsWith(d.properties.name.toLowerCase()))
           return crimesColorScale(c['Related to people'])
         })
         .attr('d', path)
         .on('mouseenter', (e, item) => {
           const info = districtsInfo.find(d => d.name.startsWith(item.properties.name))
-          const district = crimes.find(d => d.name.startsWith(item.properties.name))
+          const district = districtCrimes.find(d => d.name.startsWith(item.properties.name))
           const text = 
             Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${format(district[curr])}<br>`, '')
             // +
@@ -132,6 +235,104 @@
         .on('mouseout', () => {
           crimesTooltip.html('hover over a district to see information about it')
         })
+
+
+      setupLegend([
+        [d3.select('#legend-population'), populationColorScale],
+        [d3.select('#legend-density'), densityColorScale],
+        [d3.select('#legend-trees'), treesColorScale],
+        [d3.select('#legend-treespercapita'), treesPerCapitaColorScale],
+        [d3.select('#legend-treesperarea'), treesPerAreaColorScale],
+        [d3.select('#legend-treesperdensity'), treesPerDensityColorScale],
+        [d3.select('#legend-crimes'), crimesColorScale],
+      ])
+
+      setupMap([
+        [populationMap, populationColorScale, peopleTooltip, 'population'],
+        [densityMap, densityColorScale, peopleTooltip, 'density'],
+        [treesMap, treesColorScale, treesTooltip, 'trees'],
+        [treesPerCapitaMap, treesPerCapitaColorScale, treesTooltip, 'treesPerCapita'],
+        [treesPerAreaMap, treesPerAreaColorScale, treesTooltip, 'treesPerArea'],
+        [treesPerDensityMap, treesPerDensityColorScale, treesTooltip, 'treesPerDensity'],
+      ])
+
+      consumption = consumption.map(c => {
+        let latitude = +c.LATITUD.replace(/\./gi, '')
+        let longitude = +c.LONGITUD.replace(/\./gi, '')
+        latitude = Math.abs(latitude / (latitude.toString().length - Math.pow(10, latitude.toString().length - 2)))
+        longitude = -1 * Math.abs(longitude / (longitude.toString().length - Math.pow(10, longitude.toString().length - 2 )))
+        return {
+          year: +c.ANO,
+          month: +c.MES,
+          latitude,
+          longitude,
+          consumption: +c.CONSUMO,
+          unit: c.UNIDADES,
+          class: c.CLASE
+        }
+      })
+
+      const hexbin = d3.hexbin()
+        .radius(12)
+        .extent([[0, 0], [width, height]])
+        .x(function(d) { return projection(d)[0]; })
+        .y(function(d) { return projection(d)[1]; })
+
+      const hexbinData = hexbin(consumption.map(c => Object.assign([c.longitude, c.latitude], {consumption: c.consumption})))
+      window.hexbinData = hexbinData
+      const consumptionColorScale = d3.scaleLinear().range(["yellow", "red"])
+        .domain([0, Math.max(...hexbinData.map(d => d.length))])
+
+      setupLegend([
+        [d3.select('#legend-consumption'), consumptionColorScale]
+      ])
+
+
+      consumptionMap
+        .attr('width', width)
+        .attr('height', height)
+        .attr("viewBox", [0, 0, width, height])
+      consumptionMap
+        .selectAll('path')
+        .data(districts.features)
+        .enter().append('path')
+        .attr('d', path)
+        .attr('fill', 'lightgrey')
+      consumptionMap
+        .append('g')
+        .selectAll('path')
+        .data(hexbinData)
+        .enter().append("path")
+          .attr("d", (d) => "M" + d.x + "," + d.y + hexbin.hexagon())
+          .attr('fill', (d, i) => consumptionColorScale(d.length))
+
+      const districtsMap = d3.select('#districts-map').attr('width', width).attr('height', height);
+      districtsMap.attr('width', width)
+        .attr('height', height)
+        .attr("viewBox", [0, 0, width, height])
+      districtsMap.selectAll('path')
+        .data(districts.features)
+        .enter().append('path')
+        .attr('fill', 'lightgrey')
+        .attr('d', path)
+      
+      
+      const consumptionHeatmap = d3.select('#consumption-heatmap').attr('width', width).attr('height', height);
+      const canvas = consumptionHeatmap.node(),
+        context = canvas.getContext("2d")
+      const heat = simpleheat(canvas)
+      heat.data(consumption.map(c => {
+        const [lat, lon] = projection([c.longitude, c.latitude])
+        return [lat, lon, c.consumption]
+      }))
+      // set point radius and blur radius (25 and 15 by default)
+      heat.radius(10, 10)
+      // optionally customize gradient colors, e.g. below
+      // (would be nicer if d3 color scale worked here)
+      // heat.gradient({0: '#0000ff', 0.5: '#00ff00', 1: '#ff0000'})
+      heat.max(d3.max(consumption, d => d.consumption))
+      heat.draw(0.05)
+
 
       function calcCorrelation(d1, d2) {
         let { min, pow, sqrt } = Math
@@ -150,12 +351,64 @@
         /* https://gist.github.com/matt-west/6500993#gistcomment-2743187 */
       }
       function format (value) {
+        if (Number.isFinite(value)) {
+          const formatted = value.toFixed(2)
+          return formatted.endsWith('.00') ? (+formatted).toFixed(0) : formatted
+        }
+        return value
+      }
+
+      function setupLegend (pairs) {
+        const legendRectSize = 12
+        const legendSpacing = 2
+
+        for (const [legend, colorScale] of pairs) {
+          legend
+            .attr('height', legendRectSize)
+            .selectAll('.legend')
+            .data(colorScale.ticks())
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', colorScale)
+            .style('stroke', colorScale)
+            .attr('transform', (d, i) => 'translate(' + i * (legendRectSize+legendSpacing) + ',' + 0 + ')')
+        }
+      }
+      
+      function setupMap(pairs) {
+        for (const [map, colorScale, tooltip, prop] of pairs) {
+          map.attr('width', width)
+            .attr('height', height)
+            .attr("viewBox", [0, 0, width, height])
+          map.selectAll('path')
+            .data(districts.features)
+            .enter().append('path')
+            .attr('fill', (item) => {
+              const district = treesInfo.find(d => d.name.startsWith(item.properties.name))
+              return colorScale(district[prop])
+            })
+            .attr('d', path)
+            .on('mouseenter', (e, item) => {
+              const district = treesInfo.find(d => d.name.startsWith(item.properties.name))
+              const text = Object.keys(district).reduce((acc, curr) => acc + `<b>${curr}</b> ${format(district[curr])}<br>`, '')
+              tooltip.html(text)
+            })
+            .on('mouseout', () => {
+              tooltip.html('hover over a district to see information about it')
+            })
+        }
+        function format (value) {
           if (Number.isFinite(value)) {
             const formatted = value.toFixed(2)
             return formatted.endsWith('.00') ? (+formatted).toFixed(0) : formatted
           }
           return value
         }
+      }
 
     })();
   </script>
