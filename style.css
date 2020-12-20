@@ -517,11 +517,6 @@ video {
   background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
 }
 
-.bg-blue-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgba(37, 99, 235, var(--tw-bg-opacity));
-}
-
 .table {
   display: table;
 }
@@ -568,10 +563,6 @@ video {
   overflow: hidden;
 }
 
-.p-1 {
-  padding: 0.25rem;
-}
-
 .p-2 {
   padding: 0.5rem;
 }
@@ -609,9 +600,9 @@ video {
   --tw-ring-shadow: 0 0 #0000;
 }
 
-.text-white {
+.text-red-700 {
   --tw-text-opacity: 1;
-  color: rgba(255, 255, 255, var(--tw-text-opacity));
+  color: rgba(185, 28, 28, var(--tw-text-opacity));
 }
 
 .grid-flow-col {
